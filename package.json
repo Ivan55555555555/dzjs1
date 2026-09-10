@@ -1,0 +1,17 @@
+{
+  "name": "dz-4",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "dz070926.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dz070926.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "moment": "^2.30.1"
+  }
+}
