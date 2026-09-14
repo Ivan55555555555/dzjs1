@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const moment = require('moment');
 
 const HOST = 'localhost'
