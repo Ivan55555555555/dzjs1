@@ -8,7 +8,7 @@
   "main": "dz070926.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dz100926.js"
+    "start": "node dz.js"
   },
   "dependencies": {
     "express": "^5.2.1",
