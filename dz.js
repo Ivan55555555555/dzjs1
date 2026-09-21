@@ -7,6 +7,8 @@ const PORT = 8000
 const app = express()
 const today = moment();
 
+app.use(express.json());
+
 // 03.09.2026
 
 
@@ -162,6 +164,69 @@ app.get('/products/:id', (req, res) => {
     return res.status(200).json(product);
 });
 
-app.listen(PORT, () => {
-    console.log(`Сервер запущен: http://localhost:${PORT}/products`);
+app.listen(PORT, HOST, () => {
+    console.log(`server is running on http://${HOST}:${PORT}/products`);
+});
+
+// 17.09.2026
+
+products = [
+    {
+        id: 1,
+        name: "human",
+        price: 100.0,
+        category: "food",
+        image: ""
+    }
+    
+]
+
+app.post('/products', async (req, res) => {
+  const { name, price, category, image } = req.body;
+  const failQuery = req.query.fail === 'true'; 
+
+  if (
+    typeof name !== "string" || !name.trim() || 
+    typeof price !== "number" || price <= 0 || 
+    typeof category !== "string" || !category.trim()
+  ) {
+    return res.status(422).json("422 Invalid product data"); 
+  }
+
+  const isDuplicate = products.some(p => p.name.toLowerCase() === name.trim().toLowerCase());
+  if (isDuplicate) {
+    return res.status(409).json("409 Conflict");
+  }
+  const newProduct = {
+    id: products.length + 1,
+    name: name.trim(),
+    price: price,
+    category: category.trim(),
+    image: (typeof image === "string") ? image.trim() : ""
+  };
+
+  try {
+    const createdProduct = await addProduct(newProduct, failQuery);
+    return res.status(201).json(createdProduct);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+
+const addProduct = (newProduct, fail = false) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (fail) {
+        return reject(new Error("Database save error simulated"));
+      }
+      
+      products.push(newProduct);
+      resolve(newProduct);
+    }, 100);
+  });
+};
+
+app.listen(PORT, HOST, () => {
+    console.log(`server is running on http://${HOST}:${PORT}/products`);
 });
